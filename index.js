@@ -14,7 +14,13 @@ const expenseDisplay = document.querySelector(".expenses .value");
 const expenseDisplayPerc = document.querySelector(".expenses .percentage");
 const incomeDisplay = document.querySelector(".income .value");
 const balanceDisplay = document.querySelector(".balance");
+const currentPeriod = document.querySelector(".period");
 
+let date = new Date();
+let currentYear = date.getFullYear();
+let currentMonth = date.toLocaleString('default', { month: 'long' });
+
+currentPeriod.textContent += `${currentMonth} ${currentYear}`;
 
 window.addEventListener("load", () => {
     if (localStorage.getItem('expenses')) {
@@ -64,6 +70,8 @@ class Transaction {
         this.type = type;
     }
 }
+
+
 
 submitItem.addEventListener("click", () => {
     if (transactionAmount.value  && transactionDescription.value != 0) {
@@ -146,20 +154,17 @@ let drawTransactions = () => {
             console.log(event);
             console.log(event.target);
 
+            // Guard clause if the button has already been added
             if (event.target.innerHTML.search(`<button style="padding: 1px 4px;`) > 0) { return }
 
             let toBeRemovedIndex = event.target.classList.value.split("-")[1];
             let toBeRemovedType = event.target.classList.value.split("-")[0];
             let toBeRemoved = event.target.classList.value;
-            console.log(toBeRemovedIndex);
-            console.log(toBeRemovedType);
-            console.log(toBeRemoved);
 
+            // Otherwise add the button
             event.target.innerHTML += `<button style="padding: 1px 4px; position: fixed;" class=${toBeRemoved}>X</button>`;
-            setTimeout(() => {}, 100);
+            
             let baton = document.querySelector(`.${toBeRemoved}`);
-            console.log(baton);
-
             
 
             baton.addEventListener("click", () => {
@@ -178,6 +183,7 @@ let drawTransactions = () => {
             
             
         })
+        // Remove added button after the mouse leaves item
         item.addEventListener("mouseleave", (event) => {
             
             event.target.innerHTML = event.target.innerHTML.split(`<button style="padding: 1px 4px; position: fixed;`)[0]
