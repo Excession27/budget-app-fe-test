@@ -1,24 +1,32 @@
 let listOfExpenses = [];
 let listOfIncomes = [];
+let totalIncome = 0;
+let totalExpenses = 0;
+let balance = 0;
 
 const submitItem = document.querySelector(".submit");
 const transactionDescription = document.querySelector("#description");
 const transactionAmount = document.querySelector("#transaction-value");
 const transactionType = document.querySelector(".transaction-type");
-const incomeItems = document.querySelector(".income-items ul")
-let expenseItems = document.querySelector(".expense-items ul")
+const incomeItems = document.querySelector(".income-items ul");
+const expenseItems = document.querySelector(".expense-items ul");
+const expenseDisplay = document.querySelector(".expenses .value"); 
+const expenseDisplayPerc = document.querySelector(".expenses .percentage");
+const incomeDisplay = document.querySelector(".income .value");
+const balanceDisplay = document.querySelector(".balance");
+const listItems = document.querySelectorAll("li");
 
 window.addEventListener("load", () => {
     if (localStorage.getItem('expenses')) {
         listOfExpenses = JSON.parse(localStorage.getItem('expenses'));
-        console.log("we've got something"); // To be removed
+        
     };
     if (localStorage.getItem('incomes')) {
         listOfIncomes = JSON.parse(localStorage.getItem('incomes'));
-        console.log("we've got something"); // To be removed
+        
     };
-    drawExpenses();
-    drawIncomes();
+    draw();
+    
 });
 
 // Allow only numbers in numbers input field
@@ -52,32 +60,34 @@ class Transaction {
 }
 
 submitItem.addEventListener("click", () => {
-    if (transactionAmount.value  && transactionDescription.value) {
+    if (transactionAmount.value  && transactionDescription.value != 0) {
 
-        if (transactionType.value == "expense") {
+        if (transactionType.value == "expense" && transactionAmount.value > 0) {
             let newExpense = new Transaction(transactionDescription.value, transactionAmount.value, transactionType.value);
 
             listOfExpenses.push(newExpense);
             transactionAmount.value = "";
             transactionDescription.value = "";
             localStorage.setItem('expenses', JSON.stringify(listOfExpenses));
-            drawExpenses();
+            draw();
             console.log(listOfExpenses);
         }
 
-        if (transactionType.value == "income") {
+        if (transactionType.value == "income"  && transactionAmount.value > 0) {
             let newIncome = new Transaction(transactionDescription.value, transactionAmount.value, transactionType.value);
 
             listOfIncomes.push(newIncome);
             transactionAmount.value = "";
             transactionDescription.value = "";
             localStorage.setItem('incomes',  JSON.stringify(listOfIncomes));
-            drawIncomes();
+            draw();
             console.log(listOfIncomes);
         }
     }
     
 });
+
+
 
 let drawExpenses = () => {
     expenseItems.innerHTML = `<span></span>`
@@ -88,7 +98,7 @@ let drawExpenses = () => {
         `<li>
             <span class="description">${expense.desc}</span>
             <span class="value">${expense.amount}</span>
-            <span class="percentage"></span>
+            <span class="percentage">${totalIncome > 0 ? (expense.amount/(totalIncome/100)).toFixed(2) : 0}%</span>
         </li>
         `);
 
@@ -111,8 +121,38 @@ let drawIncomes = () => {
     });
 }
 
+let draw = () => {
+    calculateBalance();
+    drawIncomes();
+    drawExpenses();
+
+    listItems.addEventListener("hover", (event) => {
+
+    })
+}
+
 let calculateBalance = () => {
+    totalExpenses = 0;
+    totalIncome = 0;
+
+    listOfExpenses.forEach( expense => {
+        totalExpenses += Number(expense.amount);
+    });
+    listOfIncomes.forEach( income => {
+        totalIncome += Number(income.amount);
+    })
+
+    incomeDisplay.textContent = totalIncome;
+    expenseDisplay.textContent = totalExpenses;
+    if (totalIncome > 0) {
+        expenseDisplayPerc.textContent = `${(totalExpenses/(totalIncome/100)).toFixed(2)}%`
+    }
+    if (totalIncome === 0) {
+        expenseDisplayPerc.textContent = `0%`
+    }
     
+    balance = totalIncome - totalExpenses;
+    balanceDisplay.textContent = balance;
 }
 
 let clearStorage = () => {

@@ -12,19 +12,19 @@
 <body>
     <div class="container">
         <div class="budget-overview">
-            <h4 class="period">Placeholder text Month 2330</h4>
-                <h2 class="balance">2888.00</h2>
+            <h4 class="period">Available Budget March 2022</h4>
+                <h2 class="balance">00.00</h2>
 
                 <div class="income display">
                     <p>Income</p>
-                    <p class="value">1234</p>
+                    <p class="value">00</p>
                 </div>
 
                 <div class="expenses display">
                     <p>Expenses</p>
                     <div class="info">
-                        <span class="value">333</span>
-                        <span class="percentage">5%</span>
+                        <span class="value">0</span>
+                        <span class="percentage">0%</span>
 
                     </div>
                 </div>
@@ -37,8 +37,8 @@
                 <option value="expense">-</option>
                 <option value="income">+</option>
             </select>
-            <input type="text" name="description" id="description" placeholder="Add description" autocomplete="on">
-            <input type="text" name="transaction-value" id="transaction-value" min="0" step="0.01" autocomplete="off">
+            <input type="text" name="description" id="description" placeholder="Add description" autocomplete="on" maxlength="50">
+            <input type="number" name="transaction-value" id="transaction-value" min="1" step="0.01" autocomplete="off">
             <button type="submit" class="submit">✔</button>
         </div>
 
@@ -48,11 +48,7 @@
                 <h3>Income</h3>
                 <ul>
                     <span></span>
-                    <li>
-                        <span class="description">Salary</span>
-                        <span class="value">3000.00</span>
 
-                    </li>
                 </ul>
             </div>
             <div class="expense-items">
