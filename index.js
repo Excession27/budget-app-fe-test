@@ -22,8 +22,12 @@ let currentMonth = date.toLocaleString('default', { month: 'long' });
 
 currentPeriod.textContent += `${currentMonth} ${currentYear}`;
 
+
+
 window.addEventListener("load", () => {
     // Load data, if available
+    document.querySelector(".expense-items h3").textContent = document.querySelector(".expense-items h3").textContent.toUpperCase();
+
     if (localStorage.getItem('expenses')) {
         listOfExpenses = JSON.parse(localStorage.getItem('expenses'));
     };
@@ -127,7 +131,7 @@ let drawTransactions = () => {
             `<li class="expense-${index}">
             <span class="description">${expense.desc}</span>
             <span class="value">-${expense.amount}</span>
-            <span class="percentage">${totalIncome > 0 ? (expense.amount / (totalIncome / 100)).toFixed(2) : 0}%</span>
+            <span class="percentage">${totalIncome > 0 ? (expense.amount / (totalIncome / 100)).toFixed(1) : 0}%</span>
         </li>
         `);
 
@@ -155,7 +159,7 @@ let drawTransactions = () => {
             let toBeRemovedType = event.target.classList.value.split("-")[0];
             let toBeRemoved = event.target.classList.value;
             
-            event.target.lastElementChild.insertAdjacentHTML("afterend", `<button style="padding: 1px 4px; position: fixed;" class=${toBeRemoved}>X</button>`);
+            event.target.lastElementChild.insertAdjacentHTML("afterend", `<button style="padding: 1px 4px; position: relative;" class=${toBeRemoved}>X</button>`);
 
             let hoverButton = document.querySelector(`button.${toBeRemoved}`);
 
@@ -189,7 +193,7 @@ let drawTransactions = () => {
 
         // Remove added button after the mouse leaves item
         item.addEventListener("mouseleave", (event) => {
-            event.target.innerHTML = event.target.innerHTML.split(`<button style="padding: 1px 4px; position: fixed;`)[0];
+            event.target.innerHTML = event.target.innerHTML.split(`<button style="padding: 1px 4px; position: relative;`)[0];
 
         });
 
@@ -220,7 +224,7 @@ let calculateBalance = () => {
     incomeDisplay.textContent = `+${totalIncome}`;
     expenseDisplay.textContent = `-${totalExpenses}`;
     if (totalIncome > 0) {
-        expenseDisplayPerc.textContent = `${(totalExpenses / (totalIncome / 100)).toFixed(2)}%`
+        expenseDisplayPerc.textContent = `${(totalExpenses / (totalIncome / 100)).toFixed(1)}%`
     }
     if (totalIncome === 0) {
         expenseDisplayPerc.textContent = `0%`
