@@ -1,12 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Budget tracker</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    
+    <div class="container">
+        <div class="budget-overview">
+            <h4 class="period">Placeholder text Month 2330</h4>
+                <h2 class="balance">2888.00</h2>
+
+                <div class="income display">
+                    <p>Income</p>
+                    <p class="value">1234</p>
+                </div>
+
+                <div class="expenses display">
+                    <p>Expenses</p>
+                    <div class="info">
+                        <span class="value">333</span>
+                        <span class="percentage">5%</span>
+
+                    </div>
+                </div>
+
+        </div>
+
+
+        <div class="budget-controls">
+            <select name="transaction-type" class="transaction-type">
+                <option value="expense">-</option>
+                <option value="income">+</option>
+            </select>
+            <input type="text" name="description" id="description" placeholder="Add description" autocomplete="on">
+            <input type="text" name="transaction-value" id="transaction-value" min="0" step="0.01" autocomplete="off">
+            <button type="submit" class="submit">✔</button>
+        </div>
+
+        <div class="budget-items">
+            <div class="income-items">
+                
+                <h3>Income</h3>
+                <ul>
+                    <span></span>
+                    <li>
+                        <span class="description">Salary</span>
+                        <span class="value">3000.00</span>
+
+                    </li>
+                </ul>
+            </div>
+            <div class="expense-items">
+                <h3>Expenses</h3>
+                <ul>
+                    <span></span>
+
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="index.js"></script>
 </body>
+
 </html>

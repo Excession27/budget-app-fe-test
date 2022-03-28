@@ -1,0 +1,76 @@
+* {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.container {
+    width: 100vw;
+    
+}
+
+.budget-overview {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    margin: 2rem 0;
+    
+    
+}
+
+.display {
+    display: flex;
+    justify-content: space-between;
+    width: 50vw;
+    max-width: 350px;
+    
+}
+
+.balance, .period {
+    margin-bottom: 2rem;
+}
+
+.income .value {
+    margin-right: 1.5rem;
+}
+
+.expenses .percentage {
+    width: 1.5rem;
+}
+
+.budget-controls {
+    margin-bottom: 2rem;
+
+    display: flex;
+    width: 100%;
+    height: 50px;
+    justify-content: center;
+    
+}
+
+.budget-controls > * {
+    margin: 5px;
+}
+
+.budget-controls #transaction-value{
+    min-width: 65px;
+    
+}
+
+.budget-controls #description {
+    flex-grow: 1;
+    max-width: 40vw;
+}
+
+.budget-items {
+
+    display: flex;
+    justify-content: space-around;
+}
+
+.submit {
+    font-size: 15px;
+    padding: 5px;
+}
