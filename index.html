@@ -34,8 +34,8 @@
 
         <div class="budget-controls">
             <select name="transaction-type" class="transaction-type">
-                <option value="expense">-</option>
-                <option value="income">+</option>
+                <option value="income" selected>+</option>
+                <option value="expense" >-</option>
             </select>
             <input type="text" name="description" id="description" placeholder="Add description" autocomplete="on" maxlength="50">
             <input type="number" name="transaction-value" id="transaction-value" min="1" step="0.01" autocomplete="off">
@@ -48,7 +48,7 @@
                 <h3>Income</h3>
                 <ul>
                     <span></span>
-
+                    
                 </ul>
             </div>
             <div class="expense-items">
@@ -57,6 +57,9 @@
                     <span></span>
 
                 </ul>
+
+                
+
             </div>
         </div>
 

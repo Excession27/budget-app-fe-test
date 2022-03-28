@@ -14,7 +14,7 @@ const expenseDisplay = document.querySelector(".expenses .value");
 const expenseDisplayPerc = document.querySelector(".expenses .percentage");
 const incomeDisplay = document.querySelector(".income .value");
 const balanceDisplay = document.querySelector(".balance");
-const listItems = document.querySelectorAll("li");
+
 
 window.addEventListener("load", () => {
     if (localStorage.getItem('expenses')) {
@@ -25,6 +25,12 @@ window.addEventListener("load", () => {
         listOfIncomes = JSON.parse(localStorage.getItem('incomes'));
         
     };
+    if (transactionType.value === "expense") {
+        submitItem.classList.add("expense");
+    }
+    if (transactionType.value === "income") {
+        submitItem.classList.remove("expense");
+    }
     draw();
     
 });
@@ -66,7 +72,7 @@ submitItem.addEventListener("click", () => {
             let newExpense = new Transaction(transactionDescription.value, transactionAmount.value, transactionType.value);
 
             listOfExpenses.push(newExpense);
-            transactionAmount.value = "";
+            transactionAmount.value = 0;
             transactionDescription.value = "";
             localStorage.setItem('expenses', JSON.stringify(listOfExpenses));
             draw();
@@ -77,7 +83,7 @@ submitItem.addEventListener("click", () => {
             let newIncome = new Transaction(transactionDescription.value, transactionAmount.value, transactionType.value);
 
             listOfIncomes.push(newIncome);
-            transactionAmount.value = "";
+            transactionAmount.value = 0;
             transactionDescription.value = "";
             localStorage.setItem('incomes',  JSON.stringify(listOfIncomes));
             draw();
@@ -88,47 +94,107 @@ submitItem.addEventListener("click", () => {
 });
 
 
+transactionType.addEventListener("change", () => {
+    if (transactionType.value === "expense") {
+        submitItem.classList.add("expense");
+    }
+    if (transactionType.value === "income") {
+        submitItem.classList.remove("expense");
+    }
+})
 
-let drawExpenses = () => {
+
+let toBeRemoved;
+let toBeRemovedIndex;
+let toBeRemovedType;
+
+
+let drawTransactions = () => {
     expenseItems.innerHTML = `<span></span>`
 
-    listOfExpenses.forEach((expense) => {
+    listOfExpenses.forEach((expense, index) => {
         
         expenseItems.lastElementChild.insertAdjacentHTML("afterend", 
-        `<li>
+        `<li class="expense-${index}">
             <span class="description">${expense.desc}</span>
-            <span class="value">${expense.amount}</span>
+            <span class="value">-${expense.amount}</span>
             <span class="percentage">${totalIncome > 0 ? (expense.amount/(totalIncome/100)).toFixed(2) : 0}%</span>
         </li>
         `);
 
     });
 
-}
-
-let drawIncomes = () => {
     incomeItems.innerHTML = `<span></span>`
 
-    listOfIncomes.forEach((income) => {
+    listOfIncomes.forEach((income, index) => {
         
         incomeItems.lastElementChild.insertAdjacentHTML("afterend", 
-        `<li>
+        `<li class="income-${index}">
             <span class="description">${income.desc}</span>
-            <span class="value">${income.amount}</span>
+            <span class="value">+${income.amount}</span>
         </li>
         `);
 
     });
+
+
+
+    const listItems = document.querySelectorAll("li");
+    
+    listItems.forEach(item => {
+        item.addEventListener("mouseenter", (event) => {
+            console.log(event);
+            console.log(event.target);
+
+            if (event.target.innerHTML.search(`<button style="padding: 1px 4px;`) > 0) { return }
+
+            let toBeRemovedIndex = event.target.classList.value.split("-")[1];
+            let toBeRemovedType = event.target.classList.value.split("-")[0];
+            let toBeRemoved = event.target.classList.value;
+            console.log(toBeRemovedIndex);
+            console.log(toBeRemovedType);
+            console.log(toBeRemoved);
+
+            event.target.innerHTML += `<button style="padding: 1px 4px; position: fixed;" class=${toBeRemoved}>X</button>`;
+            setTimeout(() => {}, 100);
+            let baton = document.querySelector(`.${toBeRemoved}`);
+            console.log(baton);
+
+            
+
+            baton.addEventListener("click", () => {
+                if (toBeRemovedType === "expense") {
+                    listOfExpenses.splice(toBeRemovedIndex, 1);
+                    localStorage.setItem('expenses', JSON.stringify(listOfExpenses));
+                    draw();
+                }
+                if (toBeRemovedType === "income") {
+                    listOfIncomes.splice(toBeRemovedIndex, 1);
+                    localStorage.setItem('incomes',  JSON.stringify(listOfIncomes));
+                    draw();
+
+                }
+            })
+            
+            
+        })
+        item.addEventListener("mouseleave", (event) => {
+            
+            event.target.innerHTML = event.target.innerHTML.split(`<button style="padding: 1px 4px; position: fixed;`)[0]
+        });
+        
+    })
+
 }
+
+
 
 let draw = () => {
     calculateBalance();
-    drawIncomes();
-    drawExpenses();
+    drawTransactions();
 
-    listItems.addEventListener("hover", (event) => {
-
-    })
+        
+    
 }
 
 let calculateBalance = () => {
@@ -142,8 +208,8 @@ let calculateBalance = () => {
         totalIncome += Number(income.amount);
     })
 
-    incomeDisplay.textContent = totalIncome;
-    expenseDisplay.textContent = totalExpenses;
+    incomeDisplay.textContent = `+${totalIncome}`;
+    expenseDisplay.textContent = `-${totalExpenses}`;
     if (totalIncome > 0) {
         expenseDisplayPerc.textContent = `${(totalExpenses/(totalIncome/100)).toFixed(2)}%`
     }
@@ -152,9 +218,10 @@ let calculateBalance = () => {
     }
     
     balance = totalIncome - totalExpenses;
-    balanceDisplay.textContent = balance;
+    balanceDisplay.textContent = balance > 0 ? `+${balance}` : balance;
 }
 
 let clearStorage = () => {
     localStorage.clear();
 }
+
