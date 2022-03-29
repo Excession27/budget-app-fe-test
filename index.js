@@ -158,13 +158,15 @@ let drawTransactions = () => {
             
             let toBeRemovedType = event.target.classList.value.split("-")[0];
             let toBeRemoved = event.target.classList.value;
+            let toBeRemovedIndex = event.target.classList.value.split("-")[1];
+            console.log(toBeRemovedIndex);
             
             event.target.lastElementChild.insertAdjacentHTML("afterend", `<button style="padding: 1px 4px; position: relative;" class=${toBeRemoved}>X</button>`);
 
             let hoverButton = document.querySelector(`button.${toBeRemoved}`);
 
             let value = Math.abs(Number(event.target.innerHTML.split(`<span class="value">`)[1].split(`</span>`)[0]));
-            
+
             let hoverDesc = event.target.innerHTML.split(`<span class="description">`)[1].split("</span>")[0];
 
             
@@ -172,9 +174,9 @@ let drawTransactions = () => {
             // When the button is clicked, delete proper entry
             hoverButton.addEventListener("click", () => {
                 if (toBeRemovedType === "expense") {
-                    listOfExpenses = listOfExpenses.filter((expense) => {
+                    listOfExpenses = listOfExpenses.filter((expense, index) => {
                         
-                        return (!(expense.amount == value && expense.desc == hoverDesc));
+                        return (!(expense.amount == value && expense.desc == hoverDesc && index == toBeRemovedIndex));
                     });
 
                     localStorage.setItem('expenses', JSON.stringify(listOfExpenses));
@@ -182,8 +184,8 @@ let drawTransactions = () => {
                 }
 
                 if (toBeRemovedType === "income") {
-                    listOfIncomes = listOfIncomes.filter((income) => {
-                        return (!(income.amount == value && income.desc == hoverDesc));
+                    listOfIncomes = listOfIncomes.filter((income, index) => {
+                        return (!(income.amount == value && income.desc == hoverDesc  && index == toBeRemovedIndex));
                     });;
 
                     localStorage.setItem('incomes', JSON.stringify(listOfIncomes));
