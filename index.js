@@ -163,9 +163,8 @@ let drawTransactions = () => {
 
             let hoverButton = document.querySelector(`button.${toBeRemoved}`);
 
-            console.log(event.target.innerHTML.split(`<span class="description">`)[1].split("</span>")[0]);
-
             let value = Math.abs(Number(event.target.innerHTML.split(`<span class="value">`)[1].split(`</span>`)[0]));
+            
             let hoverDesc = event.target.innerHTML.split(`<span class="description">`)[1].split("</span>")[0];
 
             
