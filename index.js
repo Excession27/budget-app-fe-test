@@ -237,7 +237,4 @@ let calculateBalance = () => {
     balanceDisplay.textContent = balance > 0 ? `+${balance}` : balance;
 }
 
-let clearStorage = () => {
-    localStorage.clear();
-}
 
